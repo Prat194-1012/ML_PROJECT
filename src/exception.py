@@ -13,7 +13,7 @@ def error_message_details(error, error_details):
 class custom_exception(Exception):
     def __init__(self, error, error_details):
         super().__init__(error_message_details(error, error_details))
-        self.error_message_details = error_message_details(error, error_details=error_details)
+        self.error_message = error_message_details(error, error_details=error_details)
 
     def __str__(self):
         return self.error_message
