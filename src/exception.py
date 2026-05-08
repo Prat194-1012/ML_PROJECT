@@ -5,6 +5,8 @@ from src.logger import logging
 
 def error_message_details(error, error_details):
     _,_,exc_tb = error_details.exc_info()
+    if exc_tb is None:
+        return str(error)
     file_name = exc_tb.tb_frame.f_code.co_filename
     line_number = exc_tb.tb_lineno
     error_message: str='error occured in python script name [{0}] line number [{1}] error message [{2}]'.format(file_name, line_number,str(error))

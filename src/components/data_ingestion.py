@@ -4,6 +4,7 @@ import sys
 import logging
 import src.exception as customexception
 import pandas as pd
+import numpy as np
 
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
@@ -56,3 +57,6 @@ if __name__ == "__main__":
 
     model_trainer = ModelTrainer()
     model_trainer.initiate_model_trainer(train_arr,test_arr)
+
+    print(np.isnan(train_arr).sum())
+    print(np.isnan(test_arr).sum())

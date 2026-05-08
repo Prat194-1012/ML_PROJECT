@@ -1,7 +1,7 @@
 
 import os
 import sys
-from src.utils import evaluate_models,save_object
+from src.utils import evaluate_models, save_object
 
 from dataclasses import dataclass
 from src.logger import logging
@@ -18,11 +18,7 @@ from sklearn.ensemble import(
     AdaBoostRegressor,
     GradientBoostingRegressor,
 )
-
-from src.exception import custom_exception
-from src.logger import logging
-from src.utils import evaluate_models, save_object
-
+from sklearn.model_selection import GridSearchCV
 
 @dataclass
 class ModelTrainerconfig:
@@ -53,8 +49,50 @@ class ModelTrainer:
                 "XGB Regressor": XGBRegressor(),
                 "Catboost regressor": CatBoostRegressor(verbose=False)
             }
+
+            params = {
+                "Decision Tree Regressor": {
+                    "criterion": ["squared_error", "friedman_mse", "absolute_error", "poisson"]
+                },
+
+                "Random Forest Regressor": {
+                    "n_estimators": [100, 200],
+                    "max_depth": [None, 10, 20]
+                },
+
+                "Adaboost Regressor": {
+                    "n_estimators": [50, 100, 200],
+                    "learning_rate": [0.01, 0.1, 0.5]
+                },
+
+                "Gradient Boosting Regressor": {
+                    "n_estimators": [100, 200],
+                    "learning_rate": [0.01, 0.1, 0.5],
+                    "subsample": [0.6, 0.8, 1.0],
+                    "max_depth": [3, 5, 7]
+                },
+
+                "Linear regression": {},
+
+                "KNN Regressor": {
+                    "n_neighbors": [3, 5, 7],
+                    "weights": ["uniform", "distance"],
+                    "metric": ["euclidean", "manhattan"],
+                },
+
+                "XGB Regressor": {
+                    "n_estimators": [100, 200],
+                    "learning_rate": [0.01, 0.1, 0.5]
+                },
+
+                "Catboost regressor": {
+                    "iterations": [100, 200],
+                    "learning_rate": [0.01, 0.1, 0.5],
+                    "depth": [3, 5, 7]
+                }
+            }
              
-            model_report: dict =evaluate_models(X_train,  y_train, X_test, y_test, models)
+            model_report: dict = evaluate_models(X_train, y_train, X_test, y_test, models, params)
             
             best_model_score = max(sorted(model_report.values()))
 
